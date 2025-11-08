@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title></title>
+</head>
+
+<body>
+  
+</body>
+
+</html>
+
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>🛒⚡ XARR STORE </title>
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0;transition:all .25s ease}
+    body{
+      font-family: 'Poppins', system-ui, sans-serif;
+      background: radial-gradient(circle at top left,#001218 0%,#041429 40%, #0b0b1a 100%);
+      color:#e6fff7;
+      -webkit-font-smoothing:antialiased;
+      min-height:100vh;
+      display:flex;
+      flex-direction:column;
+    }
+
+    /* HEADER */
+    header{
+      padding:22px 16px;
+      text-align:center;
+      backdrop-filter: blur(6px);
+      background: linear-gradient(180deg, rgba(0,0,0,0.22), rgba(0,0,0,0.12));
+      border-bottom: 1px solid rgba(140,70,255,0.04);
+      box-shadow: 0 6px 30px rgba(0,170,255,0.03);
+      position: sticky;
+      top:0;
+      z-index:50;
+    }
+    header h1{font-size:2.1rem;color:#7be6ff;text-shadow:0 0 18px rgba(123,230,255,0.12);letter-spacing:1px}
+    header p{color:#bfeee0;margin-top:6px;font-size:0.95rem}
+
+    /* GRID */
+    main{flex:1;padding:26px 16px}
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+      gap:20px;
+      max-width:1100px;
+      margin:0 auto;
+    }
+
+    .card{
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius:14px;
+      padding:18px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.015);
+      border: 1px solid rgba(90,150,255,0.03);
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:8px;
+    }
+
+    .logo-emoji{font-size:3.2rem;text-shadow:0 0 12px rgba(140,70,255,0.06)}
+    h2{font-size:1.12rem;margin-top:4px;color:#eafffb;text-align:center}
+    .price{color:#8fffe0;font-weight:700;font-size:1rem}
+
+    .btn{
+      background: linear-gradient(90deg,#7be6ff,#b77bff);
+      color:#051017;
+      border:none;
+      padding:11px 16px;
+      border-radius:12px;
+      cursor:pointer;
+      font-weight:800;
+      letter-spacing:0.2px;
+      margin-top:8px;
+      width:100%;
+      box-shadow: 0 8px 25px rgba(123,230,255,0.08);
+    }
+    .btn:hover{transform:translateY(-4px);box-shadow:0 14px 40px rgba(183,123,255,0.12)}
+
+    /* PAYMENT INFO */
+    .pay{max-width:1100px;margin:16px auto;padding:14px;border-radius:10px;background:rgba(255,255,255,0.02);text-align:"center;color:#dffcf0}
+
+    /* POPUP */
+    .popup{display:none;position:fixed;inset:0;background:rgba(2,6,10,0.8);backdrop-filter:blur(6px);align-items:center;justify-content:center;z-index:200}
+    .popup-inner{width:92%;max-width:460px;background:#071014;padding:18px;border-radius:12px;border:1px solid rgba(140,70,255,0.04);box-shadow:0 20px 60px rgba(0,0,0,0.6)}
+    .popup-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+    .popup-header h3{color:#7be6ff;margin:0;font-size:1.05rem}
+    .close{background:none;border:0;color:#9fead6;font-size:1.2rem;cursor:pointer}
+    .prod-info{color:#dffcf0;margin:6px 0 12px}
+    .admin-btn{display:block;background:linear-gradient(90deg,#7be6ff,#b77bff);border-radius:10px;padding:11px;text-align:center;color:#051017;font-weight:900;border:0;margin:8px 0;width:100%}
+
+    /* FLOATING WA (kanan bawah) */
+    .floating-wa{position:fixed;right:16px;bottom:16px;display:flex;flex-direction:column;gap:12px;z-index:120}
+    .floating-wa a{display:inline-block;width:56px;height:56px;border-radius:50%;overflow:hidden;box-shadow:0 10px 30px rgba(0,0,0,0.55)}
+    .floating-wa img{width:100%;height:100%;object-fit:cover;display:block}
+
+    /* AUDIO BUTTON (kiri bawah): tidak tabrakan dengan WA */
+    #audioBtn{position:fixed;left:16px;bottom:16px;z-index:130;display:none;padding:10px 14px;border-radius:12px;border:0;font-weight:800;background:linear-gradient(90deg,#7be6ff,#b77bff);color:#04121a;box-shadow:0 10px 30px rgba(0,0,0,0.6)}
+    #audioBtn:hover{transform:scale(1.06)}
+
+    footer{padding:16px 12px;text-align:center;color:#bdeee3;background:linear-gradient(180deg,transparent,rgba(255,255,255,0.01));font-size:0.95rem}
+
+    @media (max-width:420px){
+      header h1{font-size:1.5rem}
+      .logo-emoji{font-size:2.8rem}
+      .btn{padding:10px}
+      .floating-wa a{width:50px;height:50px}
+      #audioBtn{left:12px;bottom:12px;padding:9px 12px}
+    }
+  </style>
+</head>
+<body>
+<!-- 🎵 Music Player -->
+<audio id="bgAudio" loop>
+  <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+</audio>
+
+<button id="playBtn" class="musicBtn">🎵 Play Music</button>
+
+<style>
+.musicBtn {
+  position: fixed;
+  bottom: 90px;
+  left: 20px;
+  background: #00b894;
+  color: white;
+  border: none;
+  padding: 12px 18px;
+  border-radius: 50px;
+  font-size: 16px;
+  z-index: 999999; /* ini penting, biar gak ketutup elemen lain */
+  box-shadow: 0 0 10px rgba(0,0,0,0.3);
+}
+.musicBtn:active {
+  transform: scale(0.95);
+}
+</style>
+
+<script>
+document.getElementById("playBtn").addEventListener("click", function() {
+  var audio = document.getElementById("bgAudio");
+  audio.play().then(() => {
+    console.log("Music playing!");
+  }).catch((err) => {
+    alert("Klik sekali lagi ya biar musiknya jalan 🎵");
+    console.log(err);
+  });
+});
+</script>
+  <!-- AUDIO: contoh link bebas hak cipta. Ganti src ke mp3 yang kamu punya -->
+  <!-- 🎧 Music Player -->
+<audio id="bgAudio" loop>
+  <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-10.mp3" type="audio/mpeg">
+</audio>
+
+<button id="musicToggle" class="musicBtn">▶️ Play Music</button>
+
+<style>
+.musicBtn {
+  position: fixed;
+  bottom: 90px;
+  left: 20px;
+  background: #00b894;
+  color: white;
+  border: none;
+  padding: 12px 18px;
+  border-radius: 50px;
+  font-size: 16px;
+  z-index: 999999;
+  box-shadow: 0 0 10px rgba(0,0,0,0.3);
+}
+.musicBtn:active {
+  transform: scale(0.95);
+}
+</style>
+
+<script>
+const btn = document.getElementById("musicToggle");
+const audio = document.getElementById("bgAudio");
+
+btn.addEventListener("click", () => {
+  if (audio.paused) {
+    audio.play();
+    btn.textContent = "⏸️ Pause Music";
+  } else {
+    audio.pause();
+    btn.textContent = "▶️ Play Music";
+  }
+});
+</script>
+
+  <header>
+    <h1>🛒⚡ XARR STORE </h1>
+    <p>Pembayaran: DANA • GOPAY • QRIS — Pilih produk lalu hubungi Admin</p>
+  </header>
+
+  <main>
+    <section class="grid">
+      <!-- NOKOS INDO -->
+      <article class="card">
+        <div class="logo-emoji">📞🇮🇩</div>
+        <h2>NOKOS INDO</h2>
+        <div class="price">Rp 4.000</div>
+        <button class="btn" onclick="showPopup('NOKOS INDO',4000)">Beli Sekarang</button>
+      </article>
+
+      <!-- WEBSITE SUNTIK ALL SOSMED -->
+      <article class="card">
+        <div class="logo-emoji">💉📱</div>
+        <h2>WEBSITE SUNTIK ALL SOSMED</h2>
+        <div class="price">Rp 5.000</div>
+        <button class="btn" onclick="showPopup('WEBSITE SUNTIK ALL SOSMED',5000)">Beli Sekarang</button>
+      </article>
+
+      <!-- WEBSITE NOKOS -->
+      <article class="card">
+        <div class="logo-emoji">📞</div>
+        <h2>WEBSITE NOKOS</h2>
+        <div class="price">Rp 8.000</div>
+        <button class="btn" onclick="showPopup('WEBSITE NOKOS',8000)">Beli Sekarang</button>
+      </article>
+
+      <!-- JASA BIKIN LOGO -->
+      <article class="card">
+        <div class="logo-emoji">👤</div>
+        <h2>JASA BIKIN LOGO JB/QR</h2>
+        <div class="price">Rp 2.000</div>
+        <button class="btn" onclick="showPopup('JASA BIKIN LOGO JB/QR',2000)">Beli Sekarang</button>
+      </article>
+    </section>
+
+    <div class="pay">
+      <strong>Metode Pembayaran:</strong> DANA • GOPAY • QRIS — setelah admin konfirmasi, kirim bukti pembayaran.
+    </div>
+  </main>
+
+  <!-- POPUP -->
+  <div id="popup" class="popup" aria-hidden="true">
+    <div class="popup-inner" role="dialog" aria-modal="true">
+      <div class="popup-header">
+        <h3>Pilih Admin</h3>
+        <button class="close" onclick="closePopup()">✕</button>
+      </div>
+      <div class="popup-body">
+        <p class="prod-info" id="produkInfo"></p>
+        <button class="admin-btn" onclick="beli(1)">ADMIN NO 1 — 087766124162</button>
+        <button class="admin-btn" onclick="beli(2)">ADMIN NO 2 — 085708967269</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- FLOATING WHATSAPP (kanan bawah) -->
+  <div class="floating-wa" aria-hidden="false">
+    <a href="https://wa.me/6287766124162" target="_blank" rel="noopener">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp Admin1">
+    </a>
+    <a href="https://wa.me/6285708967269" target="_blank" rel="noopener">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp Admin2">
+    </a>
+  </div>
+
+  <footer>© 2025 XARR STORE • All Rights Reserved</footer>
+
+  <script>
+    // ===== Popup + WA logic =====
+    let selectedProduct = '';
+    function showPopup(name, price) {
+      selectedProduct = `${name} (Rp ${Number(price).toLocaleString()})`;
+      document.getElementById('produkInfo').innerText = `Kamu akan membeli: ${selectedProduct}\nPilih admin untuk melanjutkan ke WhatsApp.`;
+      const pop = document.getElementById('popup');
+      pop.style.display = 'flex';
+      pop.setAttribute('aria-hidden','false');
+    }
+    function closePopup() {
+      const pop = document.getElementById('popup');
+      pop.style.display = 'none';
+      pop.setAttribute('aria-hidden','true');
+    }
+    function beli(admin) {
+      const no1 = '6287766124162'; // admin 1
+      const no2 = '6285708967269'; // admin 2
+      const nomor = admin === 1 ? no1 : no2;
+      const pesan = `Halo Admin, saya ingin membeli ${selectedProduct}. Metode pembayaran: DANA/GOPAY/QRIS.`;
+      // Open WA in new tab/app
+      window.open(`https://wa.me/${nomor}?text=${encodeURIComponent(pesan)}`, '_blank');
+      closePopup();
+    }
+
+    // ===== Audio autoplay with fallback button (mobile friendly) =====
+    (async function(){
+      const audio = document.getElementById('bgAudio');
+      const btn = document.getElementById('audioBtn');
+
+      // attempt autoplay
+      try {
+        await audio.play();
+        // autoplay allowed -> hide button
+        btn.style.display = 'none';
+      } catch (err) {
+        // autoplay blocked -> show button for user interaction
+        btn.style.display = 'block';
+        btn.innerText = 'Play Music';
+      }
+
+      // toggle play/pause when user taps button
+      btn.addEventListener('click', async () => {
+        if (audio.paused) {
+          try { await audio.play(); btn.innerText = 'Pause Music'; }
+          catch(e){ /* ignore */ }
+        } else {
+          audio.pause(); btn.innerText = 'Play Music';
+        }
+      });
+
+      // update button label on play/pause events
+      audio.addEventListener('play', ()=> btn.innerText = 'Pause Music');
+      audio.addEventListener('pause', ()=> btn.innerText = 'Play Music');
+    })();
+  </script>
+</body>
+</html>
